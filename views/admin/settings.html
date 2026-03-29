@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>站点设置 - 鱼行尺素</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-logo"><span class="icon">📖</span><span>鱼行尺素</span></div>
+      <nav class="sidebar-nav">
+        <a href="/admin/dashboard"><i class="fas fa-home"></i>仪表盘</a>
+        <a href="/admin/posts"><i class="fas fa-newspaper"></i>文章管理</a>
+        <a href="/admin/friends"><i class="fas fa-link"></i>友链管理</a>
+        <a href="/admin/comments"><i class="fas fa-comments"></i>评论管理</a>
+        <a href="/admin/settings" class="active"><i class="fas fa-cog"></i>站点设置</a>
+        <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i>查看博客</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/admin" onclick="AdminAPI.clearToken()" style="display:flex;align-items:center;gap:8px;color:#64748b;text-decoration:none;font-size:14px;"><i class="fas fa-sign-out-alt"></i>退出登录</a>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-header">
+        <i class="fas fa-bars toggle-sidebar" onclick="document.getElementById('sidebar').classList.toggle('collapsed')"></i>
+      </header>
+      <div class="admin-content">
+
+        <!-- Profile -->
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">👤 个人信息</span></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group"><label>昵称</label><input type="text" id="pNickname"></div>
+              <div class="form-group"><label>邮箱</label><input type="email" id="pEmail"></div>
+              <div class="form-group"><label>个性签名</label><input type="text" id="pSignature"></div>
+              <div class="form-group"><label>GitHub 链接</label><input type="url" id="pGithub"></div>
+              <div class="form-group"><label>哔哩哔哩链接</label><input type="url" id="pBilibili" placeholder="https://space.bilibili.com/..."></div>
+              <div class="form-group" style="grid-column:1/-1"><label>个人简介</label><textarea id="pBio" rows="3" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#f1f5f9;font-size:13px;resize:none;outline:none;"></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-check"></i>保存个人信息</button>
+          </div>
+        </div>
+
+        <!-- Site Settings -->
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">⚙️ 站点设置</span></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group"><label>站点名称</label><input type="text" id="sSiteName"></div>
+              <div class="form-group"><label>站点地址</label><input type="url" id="sSiteUrl"></div>
+              <div class="form-group"><label>站点描述</label><input type="text" id="sSiteDesc"></div>
+              <div class="form-group"><label>每页文章数</label><input type="number" id="sPostsPerPage" min="1" max="50"></div>
+              <div class="form-group">
+                <label>评论开关</label>
+                <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+                  <label class="switch"><input type="checkbox" id="sCommentEnabled"><span class="switch-slider"></span></label>
+                  <span style="font-size:13px;color:#94a3b8;">启用评论</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-check"></i>保存站点设置</button>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔐 修改密码</span></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:500px;">
+              <div class="form-group"><label>原密码</label><input type="password" id="oldPwd" placeholder="请输入原密码"></div>
+              <div class="form-group"><label>新密码</label><input type="password" id="newPwd" placeholder="请输入新密码"></div>
+            </div>
+            <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-key"></i>修改密码</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    if (!AdminAPI.isLoggedIn()) window.location.href = '/admin';
+
+    async function loadSettings() {
+      const [profile, settings] = await Promise.all([AdminAPI.getProfile(), AdminAPI.getSettings()]);
+      if (profile) {
+        document.getElementById('pNickname').value = profile.nickname || '';
+        document.getElementById('pEmail').value = profile.email || '';
+        document.getElementById('pSignature').value = profile.signature || '';
+        document.getElementById('pGithub').value = profile.github_url || '';
+        document.getElementById('pBio').value = profile.bio || '';
+      }
+      if (settings) {
+        document.getElementById('sSiteName').value = settings.site_name || '';
+        document.getElementById('sSiteUrl').value = settings.site_url || '';
+        document.getElementById('sSiteDesc').value = settings.site_description || '';
+        document.getElementById('sPostsPerPage').value = settings.posts_per_page || '10';
+        document.getElementById('sCommentEnabled').checked = settings.comment_enabled === '1';
+      }
+    }
+
+    async function saveProfile() {
+      const bilibiliUrl = document.getElementById('pBilibili') ? document.getElementById('pBilibili').value : '';
+      const data = {
+        nickname:   document.getElementById('pNickname').value,
+        email:     document.getElementById('pEmail').value,
+        signature: document.getElementById('pSignature').value,
+        github_url: document.getElementById('pGithub').value,
+        bio:       document.getElementById('pBio').value,
+        avatar:    null, blog_url: null,
+        social_links: bilibiliUrl ? { bilibili: bilibiliUrl } : {},
+      };
+      try { await AdminAPI.updateProfile(data); showToast('个人信息已保存'); }
+      catch(e) { showToast(e.message, 'error'); }
+    }
+
+    async function saveSettings() {
+      const data = {
+        site_name: document.getElementById('sSiteName').value,
+        site_url:  document.getElementById('sSiteUrl').value,
+        site_description: document.getElementById('sSiteDesc').value,
+        posts_per_page: document.getElementById('sPostsPerPage').value,
+        comment_enabled: document.getElementById('sCommentEnabled').checked ? '1' : '0',
+      };
+      try { await AdminAPI.updateSettings(data); showToast('站点设置已保存'); }
+      catch(e) { showToast(e.message, 'error'); }
+    }
+
+    async function changePassword() {
+      const oldPwd = document.getElementById('oldPwd').value;
+      const newPwd = document.getElementById('newPwd').value;
+      if (!oldPwd || !newPwd) { showToast('请填写完整', 'error'); return; }
+      try {
+        await AdminAPI.changePassword(oldPwd, newPwd);
+        showToast('密码修改成功');
+        document.getElementById('oldPwd').value = '';
+        document.getElementById('newPwd').value = '';
+      } catch(e) { showToast(e.message, 'error'); }
+    }
+
+    loadSettings();
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于 - 鱼行尺素</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: { light:'#8b5cf6', DEFAULT:'#8b5cf6', dark:'#a78bfa' } } } } }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/style.css">
+  <link rel="stylesheet" href="/public/css/themes.css">
+  <script src="/public/js/echarts.min.js"></script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 min-h-screen">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-700/60">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold text-purple-600 dark:text-purple-400">
+        <span class="text-2xl">📖</span><span>鱼行尺素</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="/" class="nav-link"><i class="fas fa-home mr-1"></i>首页</a>
+        <a href="/friends" class="nav-link"><i class="fas fa-link mr-1"></i>友链</a>
+        <a href="/about" class="nav-link active"><i class="fas fa-user mr-1"></i>关于</a>
+        <button class="theme-toggle-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700">
+          <span class="theme-toggle-icon"><i class="fas fa-moon text-gray-500 dark:hidden"></i><i class="fas fa-sun text-yellow-400 hidden dark:inline"></i></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16">
+    <div class="max-w-3xl mx-auto px-4">
+
+      <!-- Profile Header -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-8">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div id="about-avatar" class="avatar-gradient w-28 h-28 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg flex-shrink-0">鱼</div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <h1 id="about-name" class="text-3xl font-bold">鱼行尺素</h1>
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300">博主</span>
+            </div>
+            <p id="about-bio" class="text-gray-500 dark:text-gray-400 leading-relaxed mb-4">加载中...</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300">开发者</span>
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300">开源爱好者</span>
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-300">技术博主</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contribution Chart -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-8">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-chart-line text-purple-500"></i>贡献趋势</h2>
+        <div id="contribution-chart" class="w-full h-72"></div>
+      </section>
+
+      <!-- GitHub Heatmap -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-8">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fas fa-calendar-check text-purple-500"></i>GitHub 风格贡献热力图</h2>
+        <div id="github-heatmap" class="w-full overflow-x-auto"></div>
+      </section>
+
+      <!-- Skills -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-8">
+        <h2 class="text-xl font-bold mb-5 flex items-center gap-2"><i class="fas fa-code text-purple-500"></i>技术栈</h2>
+        <ul id="about-skills" class="space-y-2.5">
+          <li class="text-center text-gray-400 text-sm py-4"><i class="fas fa-spinner fa-spin mr-1"></i>加载中...</li>
+        </ul>
+      </section>
+
+      <!-- Social Links -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-8">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-share-alt text-purple-500"></i>社交链接</h2>
+        <div id="social-links" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+      </section>
+
+      <!-- Comment -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-comments text-purple-500"></i>留言区</h2>
+        <div class="mb-8 p-6 rounded-xl border bg-gray-50 dark:bg-slate-900/50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <input type="text" placeholder="昵称 (必填)" id="comment-name" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <input type="email" placeholder="邮箱 (必填)" id="comment-email" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+          <textarea placeholder="写下你的留言..." rows="4" id="comment-content" class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mb-3"></textarea>
+          <div class="flex justify-end">
+            <button onclick="submitComment()" class="px-6 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium shadow-md transition-all">
+              <i class="fas fa-paper-plane mr-2"></i>发布留言
+            </button>
+          </div>
+        </div>
+        <div id="comment-list" class="space-y-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-900 border-t py-8 text-center text-sm text-gray-400">
+    © 2024 <a href="/" class="text-purple-500 hover:underline">鱼行尺素</a> · Powered by <a href="https://halo.run" target="_blank" class="text-purple-500 hover:underline">Halo</a>
+  </footer>
+
+  <script src="/public/js/api.js"></script>
+  <script src="/public/js/charts.js"></script>
+  <script src="/public/js/main.js"></script>
+  <script>
+    async function initAbout() {
+      const [profile] = await Promise.all([API.getProfile()]);
+      if (profile) {
+        document.getElementById('about-name').textContent = profile.nickname || '鱼行尺素';
+        document.getElementById('about-bio').textContent = profile.bio || '热爱技术的程序员';
+        document.getElementById('about-avatar').textContent = (profile.nickname || '鱼')[0];
+        const socialEl = document.getElementById('social-links');
+        let html = '';
+        if (profile.github_url) {
+          const githubUser = profile.github_url.replace(/^https?:\/\/github\.com\/?/, '').replace(/\/$/, '');
+          html += `<a href="${profile.github_url}" target="_blank" class="flex items-center gap-4 p-4 rounded-xl border hover:border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-all group">
+          <div class="w-11 h-11 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-gray-300 group-hover:bg-purple-500 group-hover:text-white transition-all"><i class="fab fa-github text-lg"></i></div>
+          <div><div class="font-semibold text-sm">GitHub</div><div class="text-xs text-gray-400">@${githubUser}</div></div></a>`;
+        }
+        if (profile.social_links && profile.social_links.bilibili) html += `<a href="${profile.social_links.bilibili}" target="_blank" class="flex items-center gap-4 p-4 rounded-xl border hover:border-pink-400 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-all group">
+          <div class="w-11 h-11 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-gray-300 group-hover:bg-pink-500 group-hover:text-white transition-all"><i class="fab fa-bilibili text-lg"></i></div>
+          <div><div class="font-semibold text-sm">哔哩哔哩</div><div class="text-xs text-gray-400">技术分享</div></div></a>`;
+        socialEl.innerHTML = html || '<p class="text-gray-400 text-sm">暂无社交链接</p>';
+
+        // Render skills dynamically
+        const skillsEl = document.getElementById('about-skills');
+        const skills = profile.skills || [];
+        if (skills.length > 0) {
+          skillsEl.innerHTML = skills.map(s => {
+            const icon = s.icon ? `<i class="fas ${s.icon} text-purple-500 text-xs"></i>` : `<i class="fas fa-check text-purple-500 text-xs"></i>`;
+            return `<li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">${icon}${s.name}</li>`;
+          }).join('');
+        } else {
+          skillsEl.innerHTML = '<p class="text-gray-400 text-sm">暂无技能信息</p>';
+        }
+      }
+
+      const contribData = generateContributionData();
+      initContributionChart('contribution-chart', contribData);
+      initContributionHeatmap('github-heatmap', contribData);
+
+      // Load comments (using article ID 1 as placeholder for about page)
+      loadComments();
+    }
+
+    async function loadComments() {
+      try {
+        const comments = await API.getComments(1);
+        const el = document.getElementById('comment-list');
+        el.innerHTML = comments.length === 0
+          ? '<p class="text-center text-gray-400 py-8">暂无留言，来说点什么吧！</p>'
+          : comments.map(c => `
+            <div class="flex items-start gap-4 p-5 rounded-xl border bg-gray-50 dark:bg-slate-900/30">
+              <img src="${c.avatar}" class="w-10 h-10 rounded-full" onerror="this.style.display='none'">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="font-semibold text-sm">${c.nickname}</span>
+                  <span class="text-xs text-gray-400">${formatDate(c.created_at)}</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">${c.content}</p>
+              </div>
+            </div>`).join('');
+      } catch(e) {}
+    }
+
+    async function submitComment() {
+      const name = document.getElementById('comment-name').value.trim();
+      const email = document.getElementById('comment-email').value.trim();
+      const content = document.getElementById('comment-content').value.trim();
+      if (!name || !email || !content) { alert('请填写完整信息'); return; }
+      try {
+        await API.createComment({ post_id: 1, nickname: name, email, content });
+        alert('留言已提交（需审核后显示）');
+        ['comment-name','comment-email','comment-content'].forEach(id => document.getElementById(id).value = '');
+      } catch(e) { alert('提交失败: ' + e.message); }
+    }
+
+    initAbout();
+  </script>
+</body>
+</html>

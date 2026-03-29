@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评论管理 - 鱼行尺素</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-logo"><span class="icon">📖</span><span>鱼行尺素</span></div>
+      <nav class="sidebar-nav">
+        <a href="/admin/dashboard"><i class="fas fa-home"></i>仪表盘</a>
+        <a href="/admin/posts"><i class="fas fa-newspaper"></i>文章管理</a>
+        <a href="/admin/friends"><i class="fas fa-link"></i>友链管理</a>
+        <a href="/admin/comments" class="active"><i class="fas fa-comments"></i>评论管理</a>
+        <a href="/admin/settings"><i class="fas fa-cog"></i>站点设置</a>
+        <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i>查看博客</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/admin" onclick="AdminAPI.clearToken()" style="display:flex;align-items:center;gap:8px;color:#64748b;text-decoration:none;font-size:14px;"><i class="fas fa-sign-out-alt"></i>退出登录</a>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-header">
+        <i class="fas fa-bars toggle-sidebar" onclick="document.getElementById('sidebar').classList.toggle('collapsed')"></i>
+      </header>
+      <div class="admin-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">评论管理</h1>
+            <p class="page-subtitle">共 <span id="totalCount">0</span> 条评论</p>
+          </div>
+        </div>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>昵称</th><th>内容</th><th>文章</th><th>IP</th><th>时间</th><th>状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="commentsTable">
+              <tr><td colspan="7"><div class="loading">加载中...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    if (!AdminAPI.isLoggedIn()) window.location.href = '/admin';
+
+    async function loadComments() {
+      try {
+        const comments = await AdminAPI.getComments();
+        document.getElementById('totalCount').textContent = comments.length;
+        document.getElementById('commentsTable').innerHTML = comments.length === 0
+          ? '<tr><td colspan="7" style="text-align:center;padding:40px;color:#64748b;">暂无评论</td></tr>'
+          : comments.map(c => `
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <img src="${c.avatar||''}" style="width:28px;height:28px;border-radius:50%;" onerror="this.style.display='none'">
+                  <div>
+                    <div style="font-weight:500;font-size:13px;">${c.nickname}</div>
+                    <div style="font-size:11px;color:#64748b;">${c.email||''}</div>
+                  </div>
+                </div>
+              </td>
+              <td style="max-width:200px;">
+                <div style="font-size:13px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.content}</div>
+              </td>
+              <td style="font-size:12px;color:#64748b;">${c.post_title ? `<a href="/post/${c.post_id}" target="_blank" style="color:#8b5cf6;text-decoration:none;">${c.post_title}</a>` : '(已删除)'}</td>
+              <td style="font-size:12px;color:#64748b;">${c.ip_address||'-'}</td>
+              <td style="font-size:12px;color:#64748b;">${formatDate(c.created_at)}</td>
+              <td><span class="badge ${c.is_approved?'badge-green':'badge-orange'}">${c.is_approved?'已审核':'待审核'}</span></td>
+              <td>
+                <div style="display:flex;gap:4px;">
+                  ${!c.is_approved ? `<button class="btn btn-primary btn-sm btn-icon" onclick="approveComment(${c.id})" title="通过"><i class="fas fa-check"></i></button>` : ''}
+                  <button class="btn btn-danger btn-sm btn-icon" onclick="deleteComment(${c.id})" title="删除"><i class="fas fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>`).join('');
+      } catch(e) { console.error(e); }
+    }
+
+    async function approveComment(id) {
+      try { await AdminAPI.approveComment(id); showToast('审核通过'); loadComments(); }
+      catch(e) { showToast(e.message, 'error'); }
+    }
+
+    async function deleteComment(id) {
+      if (!confirm('确定删除该评论？')) return;
+      try { await AdminAPI.deleteComment(id); showToast('删除成功'); loadComments(); }
+      catch(e) { showToast(e.message, 'error'); }
+    }
+
+    loadComments();
+  </script>
+</body>
+</html>

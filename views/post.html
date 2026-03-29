@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" id="meta-desc" content="">
+  <title id="page-title">文章 - 鱼行尺素</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: { light:'#8b5cf6', DEFAULT:'#8b5cf6', dark:'#a78bfa' } } } } }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/style.css">
+  <link rel="stylesheet" href="/public/css/themes.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <style>
+    .prose { max-width: 100%; }
+    .prose pre { background: #1e293b; border-radius: 0.75rem; padding: 1.25rem; overflow-x: auto; }
+    .prose pre code { background: transparent; padding: 0; font-size: 0.875rem; color: #e2e8f0; }
+    .prose code { background: #f1f5f9; dark:background: #334155; padding: 0.125rem 0.375rem; border-radius: 0.375rem; font-size: 0.875em; }
+    .dark .prose code { background: #334155; color: #e2e8f0; }
+    .prose img { border-radius: 0.75rem; max-width: 100%; }
+    .prose h1,.prose h2,.prose h3,.prose h4 { font-weight: 700; margin-top: 1.5em; margin-bottom: 0.5em; }
+    .prose p { margin-bottom: 1em; line-height: 1.8; }
+    .prose ul,.prose ol { margin-bottom: 1em; padding-left: 1.5em; }
+    .prose li { margin-bottom: 0.25em; }
+    .prose blockquote { border-left: 4px solid #8b5cf6; padding-left: 1em; color: #64748b; margin: 1.5em 0; font-style: italic; }
+    .prose a { color: #8b5cf6; text-decoration: underline; }
+    .prose table { width: 100%; border-collapse: collapse; margin: 1em 0; }
+    .prose th,.prose td { border: 1px solid #e2e8f0; dark:border-color #334155; padding: 0.5em 0.75em; }
+    .prose th { background: #f8fafc; dark:background #1e293b; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 min-h-screen">
+
+  <div id="reading-progress" style="width:0%"></div>
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-700/60">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold text-purple-600 dark:text-purple-400">
+        <span class="text-2xl">📖</span><span>鱼行尺素</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="/" class="nav-link"><i class="fas fa-home mr-1"></i>首页</a>
+        <a href="/friends" class="nav-link"><i class="fas fa-link mr-1"></i>友链</a>
+        <a href="/about" class="nav-link"><i class="fas fa-user mr-1"></i>关于</a>
+        <button class="theme-toggle-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700">
+          <span class="theme-toggle-icon"><i class="fas fa-moon text-gray-500 dark:hidden"></i><i class="fas fa-sun text-yellow-400 hidden dark:inline"></i></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16">
+    <div class="max-w-4xl mx-auto px-4">
+
+      <!-- Article Header -->
+      <div id="article-header" class="mb-8">
+        <div id="article-category" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 mb-4">
+          <i class="fas fa-folder"></i><span>加载中...</span>
+        </div>
+        <h1 id="article-title" class="text-3xl md:text-4xl font-bold leading-snug mb-4">加载中...</h1>
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+          <span><i class="fas fa-user mr-1"></i><span id="article-author">鱼行尺素</span></span>
+          <span><i class="fas fa-clock mr-1"></i><span id="article-date">-</span></span>
+          <span><i class="fas fa-eye mr-1"></i><span id="article-views">-</span> 阅读</span>
+        </div>
+      </div>
+
+      <!-- Cover Image -->
+      <div id="article-cover" class="mb-8 rounded-2xl overflow-hidden shadow-md">
+        <img id="cover-img" src="" alt="" class="w-full h-64 md:h-80 object-cover hidden">
+      </div>
+
+      <!-- Article Content -->
+      <article id="article-content" class="prose dark:prose-invert mb-10 bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border">
+        <div class="text-center text-gray-400 py-20"><i class="fas fa-spinner fa-spin text-2xl"></i></div>
+      </article>
+
+      <!-- Tags -->
+      <div id="article-tags" class="flex flex-wrap gap-2 mb-10"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div id="article-nav" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10"></div>
+
+      <!-- Comment -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-comments text-purple-500"></i>评论区</h2>
+        <div id="comment-count" class="text-sm text-gray-400 mb-6">加载中...</div>
+        <div class="mb-8 p-6 rounded-xl border bg-gray-50 dark:bg-slate-900/50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <input type="text" placeholder="昵称 (必填)" id="comment-name" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <input type="email" placeholder="邮箱 (必填)" id="comment-email" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+          <textarea placeholder="写下你的看法..." rows="4" id="comment-content" class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mb-3"></textarea>
+          <div class="flex justify-end">
+            <button onclick="submitComment()" class="px-6 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium shadow-md transition-all">
+              <i class="fas fa-paper-plane mr-2"></i>发表评论
+            </button>
+          </div>
+        </div>
+        <div id="comment-list" class="space-y-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-900 border-t py-8 text-center text-sm text-gray-400">
+    © 2024 <a href="/" class="text-purple-500 hover:underline">鱼行尺素</a> · Powered by <a href="https://halo.run" target="_blank" class="text-purple-500 hover:underline">Halo</a>
+  </footer>
+
+  <button id="back-to-top" class="fixed bottom-6 right-6 w-11 h-11 rounded-full bg-purple-500 text-white shadow-lg flex items-center justify-center hover:bg-purple-600 transition-all opacity-0 pointer-events-none z-40">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="/public/js/api.js"></script>
+  <script src="/public/js/main.js"></script>
+  <script>
+    let currentPostId = null;
+
+    async function initPost() {
+      const pathParts = window.location.pathname.split('/');
+      const slug = pathParts[pathParts.length - 1];
+      if (!slug) { window.location.href = '/'; return; }
+
+      try {
+        const post = await API.getPost(slug);
+        currentPostId = post.id;
+        document.title = post.title + ' - 鱼行尺素';
+        document.getElementById('meta-desc').content = post.summary || '';
+        document.getElementById('article-title').textContent = post.title;
+        document.getElementById('article-date').textContent = formatDate(post.created_at);
+        document.getElementById('article-views').textContent = post.view_count || 0;
+        document.getElementById('article-category').innerHTML = `<i class="fas fa-folder"></i><span>${post.category_name || '未分类'}</span>`;
+
+        if (post.cover_image) {
+          const coverImg = document.getElementById('cover-img');
+          coverImg.src = post.cover_image;
+          coverImg.alt = post.title;
+          coverImg.classList.remove('hidden');
+        }
+
+        const tagsEl = document.getElementById('article-tags');
+        if (post.tags && post.tags.length > 0) {
+          tagsEl.innerHTML = post.tags.map(t =>
+            `<a href="/?tag=${encodeURIComponent(t)}" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/40 hover:text-purple-600 dark:hover:text-purple-300 transition-all"># ${t}</a>`
+          ).join('');
+        }
+
+        document.getElementById('article-content').innerHTML = post.content_html;
+
+        loadComments(post.id);
+        loadArticleNav(post.id);
+
+        // Scroll to hash if present
+        if (window.location.hash === '#comments') {
+          setTimeout(() => document.querySelector('.fa-comments')?.scrollIntoView({ behavior: 'smooth' }), 500);
+        }
+      } catch(e) {
+        document.getElementById('article-content').innerHTML = '<div class="text-center text-gray-400 py-20"><p>文章加载失败，请返回首页重试。</p></div>';
+      }
+    }
+
+    async function loadArticleNav(currentId) {
+      const navEl = document.getElementById('article-nav');
+      if (!navEl) return;
+      try {
+        const allPosts = await API.getPostAll();
+        const idx = allPosts.findIndex(p => p.id === currentId);
+        const prev = idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
+        const next = idx > 0 ? allPosts[idx - 1] : null;
+        let html = '';
+        if (prev) {
+          html += `<a href="/post/${prev.slug}" class="flex flex-col gap-1 p-4 rounded-xl border bg-white dark:bg-slate-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all group">
+            <span class="text-xs text-gray-400"><i class="fas fa-chevron-left mr-1"></i>上一篇</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover:text-purple-500 transition-colors truncate">${prev.title}</span>
+          </a>`;
+        } else {
+          html += '<div></div>';
+        }
+        if (next) {
+          html += `<a href="/post/${next.slug}" class="flex flex-col gap-1 p-4 rounded-xl border bg-white dark:bg-slate-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all text-right group">
+            <span class="text-xs text-gray-400">下一篇 <i class="fas fa-chevron-right ml-1"></i></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover:text-purple-500 transition-colors truncate">${next.title}</span>
+          </a>`;
+        } else {
+          html += '<div></div>';
+        }
+        navEl.innerHTML = html;
+      } catch(e) { navEl.innerHTML = ''; }
+    }
+
+    async function loadComments(postId) {
+      try {
+        const comments = await API.getComments(postId);
+        document.getElementById('comment-count').textContent = `共 ${comments.length} 条评论`;
+        const el = document.getElementById('comment-list');
+        el.innerHTML = comments.length === 0
+          ? '<p class="text-center text-gray-400 py-8">暂无评论，来抢沙发！</p>'
+          : comments.map(c => `
+            <div class="flex items-start gap-4 p-5 rounded-xl border bg-gray-50 dark:bg-slate-900/30">
+              <img src="${c.avatar}" class="w-10 h-10 rounded-full flex-shrink-0" onerror="this.style.display='none'">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="font-semibold text-sm">${c.nickname}</span>
+                  <span class="text-xs text-gray-400">${formatDate(c.created_at)}</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">${c.content}</p>
+              </div>
+            </div>`).join('');
+      } catch(e) {}
+    }
+
+    async function submitComment() {
+      const name = document.getElementById('comment-name').value.trim();
+      const email = document.getElementById('comment-email').value.trim();
+      const content = document.getElementById('comment-content').value.trim();
+      if (!name || !email || !content) { alert('请填写完整信息'); return; }
+      try {
+        await API.createComment({ post_id: currentPostId, nickname: name, email, content });
+        alert('评论已提交（需审核后显示）');
+        ['comment-name','comment-email','comment-content'].forEach(id => document.getElementById(id).value = '');
+      } catch(e) { alert('提交失败: ' + e.message); }
+    }
+
+    // Reading progress
+    window.addEventListener('scroll', () => {
+      const el = document.getElementById('reading-progress');
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      el.style.width = (docHeight > 0 ? (scrollTop / docHeight * 100) : 0) + '%';
+    });
+
+    initPost();
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>友链 - 鱼行尺素</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: { light:'#8b5cf6', DEFAULT:'#8b5cf6', dark:'#a78bfa' } } } } }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/style.css">
+  <link rel="stylesheet" href="/public/css/themes.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 min-h-screen">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-700/60">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold text-purple-600 dark:text-purple-400">
+        <span class="text-2xl">📖</span><span>鱼行尺素</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="/" class="nav-link"><i class="fas fa-home mr-1"></i>首页</a>
+        <a href="/friends" class="nav-link active"><i class="fas fa-link mr-1"></i>友链</a>
+        <a href="/about" class="nav-link"><i class="fas fa-user mr-1"></i>关于</a>
+        <button class="theme-toggle-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700">
+          <span class="theme-toggle-icon"><i class="fas fa-moon text-gray-500 dark:hidden"></i><i class="fas fa-sun text-yellow-400 hidden dark:inline"></i></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <!-- Page Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold mb-3"><i class="fas fa-link text-purple-500 mr-2"></i>友情链接</h1>
+        <p class="text-gray-400">与志同道合的朋友们相互链接，一起成长</p>
+      </div>
+
+      <!-- Apply Section -->
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border mb-10">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fas fa-handshake text-purple-500"></i>申请友链</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">欢迎与志同道合的朋友交换链接！请确保您的网站：
+          <span class="text-purple-500">内容健康、积极向上</span>、
+          <span class="text-purple-500">有独立域名</span>、
+          <span class="text-purple-500">博客类网站优先</span>。
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-slate-900/50 rounded-xl p-4">
+          <div><span class="font-semibold text-purple-500">名称：</span>鱼行尺素</div>
+          <div><span class="font-semibold text-purple-500">地址：</span><span id="site-url">https://yuxingchisu.com</span></div>
+          <div><span class="font-semibold text-purple-500">描述：</span>书山有路勤为径，学海无涯苦作舟</div>
+          <div><span class="font-semibold text-purple-500">头像：</span>使用博主昵称首字</div>
+        </div>
+        <div class="mt-4 p-4 rounded-xl border border-dashed border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/10">
+          <p class="text-sm text-purple-600 dark:text-purple-300"><i class="fas fa-info-circle mr-1"></i>在下方留言或在评论区留下您的网站信息，我会尽快处理！</p>
+        </div>
+      </div>
+
+      <!-- Friends Grid -->
+      <div id="friends-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"></div>
+
+      <!-- Comment -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-comments text-purple-500"></i>留言区</h2>
+        <div class="mb-8 p-6 rounded-xl border bg-gray-50 dark:bg-slate-900/50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <input type="text" placeholder="昵称 (必填)" id="comment-name" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <input type="email" placeholder="邮箱 (必填)" id="comment-email" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+          <textarea placeholder="申请友链请留下网站名称、地址和描述..." rows="4" id="comment-content" class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mb-3"></textarea>
+          <div class="flex justify-end">
+            <button onclick="submitComment()" class="px-6 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium shadow-md transition-all">
+              <i class="fas fa-paper-plane mr-2"></i>发布留言
+            </button>
+          </div>
+        </div>
+        <div id="comment-list" class="space-y-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-900 border-t py-8 text-center text-sm text-gray-400">
+    © 2024 <a href="/" class="text-purple-500 hover:underline">鱼行尺素</a> · Powered by <a href="https://halo.run" target="_blank" class="text-purple-500 hover:underline">Halo</a>
+  </footer>
+
+  <script src="/public/js/api.js"></script>
+  <script src="/public/js/main.js"></script>
+  <script>
+    async function initFriends() {
+      const [friends, profile] = await Promise.all([API.getFriends(), API.getProfile()]);
+
+      if (profile && profile.blog_url) {
+        document.getElementById('site-url').textContent = profile.blog_url;
+      }
+
+      const el = document.getElementById('friends-grid');
+      if (!friends || friends.length === 0) {
+        el.innerHTML = '<div class="col-span-full text-center text-gray-400 py-12">暂无友链，敬请期待！</div>';
+      } else {
+        el.innerHTML = friends.map(f => `
+          <a href="${f.url}" target="_blank" class="friend-card group block bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-500 transition-all hover:-translate-y-1 hover:shadow-md">
+            <div class="flex items-center gap-4 mb-4">
+              <div style="background:${f.color||'#8b5cf6'};" class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg font-bold shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform">${(f.avatar||f.name[0]).toUpperCase()}</div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-base group-hover:text-purple-500 transition-colors truncate">${f.name}</div>
+                <div class="text-xs text-gray-400 mt-0.5 truncate">${f.description||'暂无描述'}</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-400 truncate max-w-[70%]">${f.url}</span>
+              <span class="text-purple-400 text-xs group-hover:translate-x-1 transition-transform"><i class="fas fa-arrow-right"></i></span>
+            </div>
+          </a>`).join('');
+      }
+
+      loadComments();
+    }
+
+    async function loadComments() {
+      try {
+        const comments = await API.getComments(1);
+        const el = document.getElementById('comment-list');
+        el.innerHTML = comments.length === 0
+          ? '<p class="text-center text-gray-400 py-8">暂无留言，快来抢沙发！</p>'
+          : comments.map(c => `
+            <div class="flex items-start gap-4 p-5 rounded-xl border bg-gray-50 dark:bg-slate-900/30">
+              <img src="${c.avatar}" class="w-10 h-10 rounded-full" onerror="this.style.display='none'">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="font-semibold text-sm">${c.nickname}</span>
+                  <span class="text-xs text-gray-400">${formatDate(c.created_at)}</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">${c.content}</p>
+              </div>
+            </div>`).join('');
+      } catch(e) {}
+    }
+
+    async function submitComment() {
+      const name = document.getElementById('comment-name').value.trim();
+      const email = document.getElementById('comment-email').value.trim();
+      const content = document.getElementById('comment-content').value.trim();
+      if (!name || !email || !content) { alert('请填写完整信息'); return; }
+      try {
+        await API.createComment({ post_id: 1, nickname: name, email, content });
+        alert('留言已提交（需审核后显示）');
+        ['comment-name','comment-email','comment-content'].forEach(id => document.getElementById(id).value = '');
+      } catch(e) { alert('提交失败: ' + e.message); }
+    }
+
+    initFriends();
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>友链管理 - 鱼行尺素</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-logo"><span class="icon">📖</span><span>鱼行尺素</span></div>
+      <nav class="sidebar-nav">
+        <a href="/admin/dashboard"><i class="fas fa-home"></i>仪表盘</a>
+        <a href="/admin/posts"><i class="fas fa-newspaper"></i>文章管理</a>
+        <a href="/admin/friends" class="active"><i class="fas fa-link"></i>友链管理</a>
+        <a href="/admin/comments"><i class="fas fa-comments"></i>评论管理</a>
+        <a href="/admin/settings"><i class="fas fa-cog"></i>站点设置</a>
+        <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i>查看博客</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/admin" onclick="AdminAPI.clearToken()" style="display:flex;align-items:center;gap:8px;color:#64748b;text-decoration:none;font-size:14px;"><i class="fas fa-sign-out-alt"></i>退出登录</a>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-header">
+        <i class="fas fa-bars toggle-sidebar" onclick="document.getElementById('sidebar').classList.toggle('collapsed')"></i>
+      </header>
+      <div class="admin-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">友链管理</h1>
+            <p class="page-subtitle">共 <span id="totalCount">0</span> 条友链</p>
+          </div>
+          <button class="btn btn-primary" onclick="openFriendModal()"><i class="fas fa-plus"></i>添加友链</button>
+        </div>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>图标</th><th>名称</th><th>描述</th><th>地址</th><th>排序</th><th>状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="friendsTable">
+              <tr><td colspan="7"><div class="loading">加载中...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Friend Modal -->
+  <div class="modal-overlay" id="friendModal">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <span class="modal-title" id="friendModalTitle">添加友链</span>
+        <span class="modal-close" onclick="closeModal('friendModal')">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>名称 *</label><input type="text" id="fName" placeholder="友链名称" required></div>
+        <div class="form-group"><label>地址 *</label><input type="url" id="fUrl" placeholder="https://..." required></div>
+        <div class="form-group"><label>描述</label><input type="text" id="fDesc" placeholder="一句话描述"></div>
+        <div class="form-group"><label>图标文字</label><input type="text" id="fAvatar" placeholder="单字如：H"></div>
+        <div class="form-group"><label>颜色</label><input type="color" id="fColor" value="#8b5cf6"></div>
+        <div class="form-group"><label>排序（数字越小越靠前）</label><input type="number" id="fSort" value="0" min="0"></div>
+        <div class="form-group">
+          <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+            <label class="switch"><input type="checkbox" id="fActive" checked><span class="switch-slider"></span></label>
+            <span style="font-size:13px;color:#94a3b8;">启用</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('friendModal')">取消</button>
+        <button class="btn btn-primary" onclick="saveFriend()"><i class="fas fa-check"></i>保存</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    if (!AdminAPI.isLoggedIn()) window.location.href = '/admin';
+    let editingId = null;
+
+    async function loadFriends() {
+      try {
+        const friends = await AdminAPI.getFriends();
+        document.getElementById('totalCount').textContent = friends.length;
+        document.getElementById('friendsTable').innerHTML = friends.length === 0
+          ? '<tr><td colspan="7" style="text-align:center;padding:40px;color:#64748b;">暂无友链</td></tr>'
+          : friends.map(f => `
+            <tr>
+              <td><div style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px;background:${f.color||'#8b5cf6'}">${(f.avatar||f.name[0]).toUpperCase()}</div></td>
+              <td style="font-weight:500;">${f.name}</td>
+              <td style="color:#94a3b8;font-size:13px;">${f.description||'-'}</td>
+              <td><a href="${f.url}" target="_blank" style="color:#8b5cf6;font-size:12px;text-decoration:none;">${f.url.substring(0,30)}...</a></td>
+              <td>${f.sort_order}</td>
+              <td><span class="badge ${f.is_active?'badge-green':'badge-red'}">${f.is_active?'启用':'禁用'}</span></td>
+              <td>
+                <button class="btn btn-ghost btn-sm btn-icon" onclick="editFriend(${f.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="deleteFriend(${f.id},'${f.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>`).join('');
+      } catch(e) { console.error(e); }
+    }
+
+    function openFriendModal(f) {
+      editingId = f ? f.id : null;
+      document.getElementById('friendModalTitle').textContent = f ? '编辑友链' : '添加友链';
+      document.getElementById('fName').value = f ? f.name : '';
+      document.getElementById('fUrl').value = f ? f.url : '';
+      document.getElementById('fDesc').value = f ? f.description : '';
+      document.getElementById('fAvatar').value = f ? f.avatar : '';
+      document.getElementById('fColor').value = f ? (f.color||'#8b5cf6') : '#8b5cf6';
+      document.getElementById('fSort').value = f ? f.sort_order : 0;
+      document.getElementById('fActive').checked = f ? !!f.is_active : true;
+      document.getElementById('friendModal').classList.add('show');
+    }
+
+    function editFriend(id) {
+      AdminAPI.getFriends().then(fs => {
+        const f = fs.find(x => x.id === id);
+        if (f) openFriendModal(f);
+      });
+    }
+
+    async function saveFriend() {
+      const name = document.getElementById('fName').value.trim();
+      const url = document.getElementById('fUrl').value.trim();
+      if (!name || !url) { showToast('请填写名称和地址', 'error'); return; }
+      const data = {
+        name, url,
+        description: document.getElementById('fDesc').value.trim(),
+        avatar: document.getElementById('fAvatar').value.trim(),
+        color: document.getElementById('fColor').value,
+        sort_order: parseInt(document.getElementById('fSort').value) || 0,
+        is_active: document.getElementById('fActive').checked,
+      };
+      try {
+        if (editingId) await AdminAPI.updateFriend(editingId, data);
+        else await AdminAPI.createFriend(data);
+        closeModal('friendModal');
+        showToast('保存成功');
+        loadFriends();
+      } catch(e) { showToast(e.message, 'error'); }
+    }
+
+    async function deleteFriend(id, name) {
+      if (!confirm(`确定删除友链「${name}」吗？`)) return;
+      try {
+        await AdminAPI.deleteFriend(id);
+        showToast('删除成功');
+        loadFriends();
+      } catch(e) { showToast(e.message, 'error'); }
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    loadFriends();
+  </script>
+</body>
+</html>

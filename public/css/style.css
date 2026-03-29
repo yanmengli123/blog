@@ -1,0 +1,240 @@
+/* ============================================
+   鱼行尺素 - 个人博客 样式文件
+   ============================================ */
+
+/* ---- 动画 ---- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes music-bar {
+  0%, 100% { height: 4px; }
+  50%      { height: 16px; }
+}
+
+.animate-fadeInUp  { animation: fadeInUp 0.5s ease both; }
+.animate-fadeIn    { animation: fadeIn 0.4s ease both; }
+.animate-float     { animation: float 3s ease-in-out infinite; }
+.animate-pulse-glow{ animation: pulse-glow 2s ease-in-out infinite; }
+
+/* ---- 文章卡片 hover ---- */
+.article-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* ---- 标签 hover ---- */
+.tag-item {
+  transition: all 0.25s ease;
+}
+.tag-item:hover {
+  background-color: #8b5cf6;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ---- 友链卡片 hover ---- */
+.friend-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.friend-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.15);
+}
+
+/* ---- 导航链接 ---- */
+.nav-link {
+  position: relative;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: color 0.2s, background-color 0.2s;
+}
+.nav-link:hover {
+  color: #8b5cf6;
+  background-color: rgba(139, 92, 246, 0.08);
+}
+.nav-link.active {
+  color: #8b5cf6;
+  background-color: rgba(139, 92, 246, 0.1);
+  font-weight: 600;
+}
+
+/* ---- 代码块 ---- */
+pre, code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.875rem;
+}
+pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  line-height: 1.7;
+}
+code:not(pre code) {
+  background-color: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+/* ---- 平滑滚动 ---- */
+html { scroll-behavior: smooth; }
+
+/* ---- 选中颜色 ---- */
+::selection {
+  background-color: rgba(139, 92, 246, 0.25);
+  color: inherit;
+}
+
+/* ---- 滚动条 ---- */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #cbd5e1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+
+/* ---- 音乐播放器动画条 ---- */
+.music-bar {
+  display: inline-block;
+  width: 3px;
+  height: 4px;
+  background: #8b5cf6;
+  border-radius: 99px;
+  animation: music-bar 0.8s ease-in-out infinite;
+  margin: 0 1px;
+}
+.music-bar:nth-child(2) { animation-delay: 0.2s; }
+.music-bar:nth-child(3) { animation-delay: 0.4s; }
+.music-bar:nth-child(4) { animation-delay: 0.6s; }
+.music-paused .music-bar { animation-play-state: paused; }
+
+/* ---- 头像渐变背景 ---- */
+.avatar-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---- 贡献热力图 ---- */
+.heat-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  transition: transform 0.15s;
+}
+.heat-cell:hover { transform: scale(1.4); z-index: 1; }
+
+/* ---- 进度条 ---- */
+.progress-bar {
+  height: 3px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  transition: width 0.6s ease;
+}
+
+/* ---- 页面加载进度条 ---- */
+#reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ---- TOC 目录 ---- */
+.toc-link {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  border-left: 2px solid transparent;
+  font-size: 0.875rem;
+  color: #64748b;
+  transition: all 0.2s;
+  border-radius: 0 4px 4px 0;
+}
+.toc-link:hover, .toc-link.active {
+  border-left-color: #8b5cf6;
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
+  padding-left: 0.75rem;
+}
+
+/* ---- 搜索高亮 ---- */
+mark {
+  background: rgba(139, 92, 246, 0.2);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* ---- 图片懒加载占位 ---- */
+img.lazy {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+img.lazy.loaded { opacity: 1; }
+
+/* ---- 社交图标 hover ---- */
+.social-icon {
+  transition: all 0.25s ease;
+}
+.social-icon:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* ---- 统计数字动画 ---- */
+.stat-number {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.stat-number:hover { transform: scale(1.15); }
+
+/* ---- 移动端优化 ---- */
+@media (max-width: 768px) {
+  .nav-link { font-size: 0.875rem; padding: 0.25rem 0.5rem; }
+  .article-card { border-radius: 1rem !important; }
+}
+
+/* ---- 打印样式 ---- */
+@media print {
+  nav, aside, footer, .no-print { display: none !important; }
+  main { padding-top: 1rem !important; }
+  .article-card { box-shadow: none !important; break-inside: avoid; }
+}

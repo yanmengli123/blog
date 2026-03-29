@@ -1,0 +1,114 @@
+/* ============================================
+   鱼行尺素 - 暗色模式主题补丁
+   ============================================ */
+
+.dark {
+  /* 明暗模式变量覆盖 */
+  --color-bg:       #0f172a;
+  --color-surface:  #1e293b;
+  --color-surface2: #0f172a;
+  --color-border:  #334155;
+  --color-text:    #f1f5f9;
+  --color-muted:   #94a3b8;
+  --color-heading: #f8fafc;
+}
+
+.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+.dark .bg-surface-light,
+.dark .bg-white { background-color: #1e293b !important; }
+
+.dark .bg-background-light { background-color: #0f172a !important; }
+
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-gray-200 { background-color: #1e293b !important; }
+
+.dark .bg-gray-700,
+.dark .bg-gray-800 { background-color: #0f172a !important; }
+
+.dark .text-text-light { color: #e2e8f0 !important; }
+.dark .text-text-muted-light { color: #94a3b8 !important; }
+
+.dark .text-gray-400,
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700 { color: #94a3b8 !important; }
+
+.dark .text-gray-800,
+.dark .text-gray-900 { color: #f1f5f9 !important; }
+
+.dark .border-gray-200,
+.dark .border-gray-300 { border-color: #334155 !important; }
+
+.dark .border-gray-700 { border-color: #475569 !important; }
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder { color: #64748b !important; }
+
+.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -2px rgba(0,0,0,0.3) !important; }
+
+.dark .prose { color: #e2e8f0; }
+.dark .prose h1, .dark .prose h2, .dark .prose h3,
+.dark .prose h4 { color: #f8fafc; }
+.dark .prose a { color: #a78bfa; }
+.dark .prose code { background-color: rgba(139,92,246,0.15); color: #c4b5fd; }
+.dark .prose pre { background-color: #020617; border-color: #1e293b; }
+.dark .prose blockquote { border-left-color: #8b5cf6; color: #94a3b8; }
+
+.dark .article-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.dark .friend-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.dark .heat-cell {
+  filter: brightness(0.85);
+}
+
+/* 暗色模式下 nav 链接 */
+.dark .nav-link { color: #94a3b8; }
+.dark .nav-link:hover { color: #a78bfa; background-color: rgba(167,139,250,0.1); }
+.dark .nav-link.active { color: #a78bfa; background-color: rgba(167,139,250,0.12); }
+
+/* 暗色模式下滚动条 */
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+
+/* 暗色模式下 placeholder avatar 背景 */
+.dark .avatar-placeholder { background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6); }
+
+/* 暗色模式下按钮 */
+.dark .bg-primary-light { background-color: #7c3aed !important; }
+.dark .text-primary-light { color: #a78bfa !important; }
+.dark .hover\:bg-primary-light:hover { background-color: #6d28d9 !important; }
+
+/* 暗色模式下 focus ring */
+.dark .focus\:ring-primary-light:focus,
+.dark .focus\:ring-primary-dark:focus { --tw-ring-color: #a78bfa; }
+
+/* 暗色模式下评论 */
+.dark .comment-card { background-color: #1e293b; border-color: #334155; }
+
+/* 暗色模式下分页 */
+.dark .page-btn { background-color: #1e293b; border-color: #334155; color: #94a3b8; }
+.dark .page-btn:hover { background-color: #334155; color: #a78bfa; }
+.dark .page-btn.active { background-color: #7c3aed; border-color: #7c3aed; color: #fff; }
+
+/* 暗色模式下 about 页面信息卡片 */
+.dark .info-card { background-color: #1e293b; border-color: #334155; }
