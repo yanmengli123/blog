@@ -241,6 +241,7 @@
         });
         renderArticleChart(tab);
     }
+    window.switchArticleChart = switchArticleChart;
 
     function renderArticleChart(tab) {
         if (!articleOverviewChart || !chartsData) return;
@@ -738,6 +739,11 @@
 
     /* ========== Start ========== */
     initIndex();
+
+    // Expose to global scope for inline onclick handlers
+    window.changePage = changePage;
+    window.handleSearch = handleSearch;
+    window.filterArticles = filterArticles;
 })();
   </script>
 </body>
