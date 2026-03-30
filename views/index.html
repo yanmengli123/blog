@@ -85,9 +85,9 @@
             <div class="flex items-center justify-between mb-5">
               <h2 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-newspaper text-purple-500"></i>最新文章</h2>
               <div class="flex items-center gap-1 flex-wrap">
-                <button data-filter="all" onclick="filterArticles('all')" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 transition-all">全部</button>
-                <button data-filter="tech" onclick="filterArticles('tech')" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-purple-100 transition-all">技术</button>
-                <button data-filter="life" onclick="filterArticles('life')" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-purple-100 transition-all">生活</button>
+                <button data-filter="all" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 transition-all">全部</button>
+                <button data-filter="tech" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-purple-100 transition-all">技术</button>
+                <button data-filter="life" class="filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-purple-100 transition-all">生活</button>
               </div>
             </div>
             <div id="article-list" class="space-y-5"><p class="text-gray-400 text-sm text-center py-12">加载中...</p></div>
@@ -551,11 +551,11 @@
 
                     // Update filter buttons
                     document.querySelectorAll('.filter-btn').forEach(function(btn) {
-                        var f = btn.getAttribute('data-filter') || btn.getAttribute('onclick').match(/filterArticles\('([^']+)'\)/)?.[1];
+                        var f = btn.getAttribute('data-filter');
                         if (f === currentFilter) {
-                            btn.className = btn.className.replace(/bg-\w+-\d+\s+dark:bg-\w+-\S+\s+text-\w+-\d+\s+dark:text-\w+\S+/, '').trim() + ' bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300';
+                            btn.className = 'filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 transition-all';
                         } else {
-                            btn.className = btn.className.replace(/bg-purple-100\s+dark:bg-purple-900\/40\s+text-purple-600\s+dark:text-purple-300/, 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400');
+                            btn.className = 'filter-btn px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-purple-100 transition-all';
                         }
                     });
 
@@ -695,6 +695,14 @@
         document.documentElement.classList.add('dark');
     }
     updateThemeIcon();
+
+    /* ========== Filter Buttons ========== */
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var filter = btn.getAttribute('data-filter');
+            loadArticleList(filter, 1);
+        });
+    });
 
     /* ========== Theme toggle buttons ========== */
     document.querySelectorAll('.theme-toggle-btn').forEach(function(btn) {
