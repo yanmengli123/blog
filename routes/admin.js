@@ -41,6 +41,14 @@ router.get('/api/stats', (req, res) => {
 });
 
 // 文章管理
+router.get('/api/posts/count', (req, res) => {
+    try {
+        const { search } = req.query;
+        const total = db.getPostCount({ search: search || undefined });
+        res.json({ total });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 router.get('/api/posts', (req, res) => {
     try {
         const { page = 1, limit = 20, search } = req.query;

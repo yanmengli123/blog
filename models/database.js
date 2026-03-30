@@ -187,6 +187,14 @@ const api = {
         return all(`SELECT id, title, slug, created_at FROM posts WHERE is_published=1 ORDER BY is_pinned DESC, created_at DESC`);
     },
 
+    // 文章总数（支持搜索过滤，用于后台管理）
+    getPostCount({ search } = {}) {
+        let q = `SELECT COUNT(*) as total FROM posts WHERE is_published=1`;
+        const params = [];
+        if (search) { q += ' AND (title LIKE ? OR content LIKE ?)'; params.push(`%${search}%`, `%${search}%`); }
+        return get(q, params)?.total || 0;
+    },
+
     getPostById(id) {
         return get(`SELECT p.*,c.name as category_name,GROUP_CONCAT(DISTINCT t.name) as tag_names
             FROM posts p LEFT JOIN categories c ON p.category_id=c.id

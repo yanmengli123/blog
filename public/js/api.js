@@ -59,6 +59,7 @@ const AdminAPI = {
 
     login(u, p)       { return this.request('POST', '/login', { username: u, password: p }); },
     getStats()        { return this.request('GET', '/stats'); },
+    getPostCount(p)   { const q = new URLSearchParams(p||{}).toString(); return this.request('GET', `/posts/count${q?'?'+q:''}`); },
     getPosts(p)       { const q = new URLSearchParams(p||{}).toString(); return this.request('GET', `/posts${q?'?'+q:''}`); },
     getPost(id)       { return this.request('GET', `/posts/${id}`); },
     createPost(data)  { return this.request('POST', '/posts', data); },
