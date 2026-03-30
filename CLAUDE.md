@@ -35,6 +35,8 @@ node seed.js             # 重置并填充测试数据
 ```
 服务器同时配置了根路径 `app.use(express.static(...))` 和 `/public` 别名，确保两种路径均可访问。
 
+**注意**：根目录下的 `index.html`、`about.html`、`post.html`、`friends.html`、`css/`、`js/` 是旧静态文件，已废弃不再使用。所有前台页面由 `views/` 目录的模板经 Express 路由提供。
+
 ### 数据库单例模式
 `database.js` 使用闭包变量 `_db` 和 `_initPromise` 保证单例。**关键规则**：
 - `params` 中 `undefined` 值会报错，必须转换为 `null`
@@ -54,10 +56,20 @@ router.get('/comments/recent') ← 先于 /comments
 - JWT secret 在 `.env` 的 `JWT_SECRET`
 - `AdminAPI` 前端类自动从 `localStorage` 读取 token
 
-### 外部依赖
-- ECharts 已下载到 `public/js/echarts.min.js`（国内 CDN 不通，必须本地）
-- Tailwind CSS、Font Awesome 使用 CDN
-- `marked` 将 Markdown 转为 HTML
+### 外部依赖（全部本地化，国内可直接访问）
+所有 CDN 资源已下载到 `public/` 目录，**禁止再引用外部 CDN URL**：
+- ECharts → `public/js/echarts.min.js`（必须本地，国内 CDN 不通）
+- Font Awesome → `public/css/font-awesome.min.css` + `public/webfonts/`（含 woff2 字体）
+- Inter 字体 → `public/css/inter/inter.css` + `public/css/inter/*.woff2`
+- Tailwind CSS → `https://cdn.tailwindcss.com`（可访问，无需本地）
+
+**后台 HTML 模板规则**：必须引用 `/public/css/inter/inter.css`，禁止残留 `<link href="">` 空标签。
+
+### API 工具方法
+`public/js/api.js` 中的 `API` 和 `AdminAPI` 类使用 `_qs()` 方法构建 URL 查询参数，自动过滤 `null`/`undefined`/`''` 空值。**不要用 `URLSearchParams` 直接传含空值的对象**，否则 `undefined` 会被转成字符串 `"undefined"` 导致后端搜到错误的值。
+
+### 单篇文章路由 `/api/posts/:id`
+优先按 slug 查，找不到再按 ID 查（因为 slug 可能也是纯数字）。**不要用 `isNaN()` 判断**，统一用：`db.getPostBySlug(raw)` → fallback `db.getPostById(parseInt(raw))`
 
 ## 环境变量（.env）
 
