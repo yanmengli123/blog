@@ -87,7 +87,10 @@ router.get('/posts/count', (req, res) => {
 // 单篇文章
 router.get('/posts/:id', (req, res) => {
     try {
-        let post = isNaN(req.params.id) ? db.getPostBySlug(req.params.id) : db.getPostById(parseInt(req.params.id));
+        const raw = req.params.id;
+        // 优先按slug查（slug也可能是纯数字），找不到再按ID查
+        let post = db.getPostBySlug(raw);
+        if (!post) post = db.getPostById(parseInt(raw));
         if (!post) return res.status(404).json({ error: '文章不存在' });
         db.incrementViewCount(post.id);
         post.tags = post.tag_names ? post.tag_names.split(',') : [];
