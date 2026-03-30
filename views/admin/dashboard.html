@@ -254,6 +254,7 @@
 
         // Charts data
         const chartsData = await API.request('GET', '/stats/charts');
+        initCharts();
         renderCharts(chartsData);
 
         // Recent posts
@@ -286,7 +287,6 @@
             </div>`).join('');
         }
 
-        initCharts();
       } catch (err) {
         console.error('[loadDashboard]', err);
         document.getElementById('recentPosts').innerHTML = '<div style="padding:20px;color:#f87171;font-size:13px;">数据加载失败: ' + err.message + '</div>';
