@@ -44,7 +44,7 @@ router.get('/api/stats', (req, res) => {
 router.get('/api/posts/count', (req, res) => {
     try {
         const { search } = req.query;
-        const total = db.getPostCount({ search: search || undefined });
+        const total = db.getPostCount({ search: (search && search !== 'null' && search !== 'undefined') ? search : null });
         res.json({ total });
     } catch (e) { res.status(500).json({ error: e.message }); }
 });

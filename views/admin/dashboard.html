@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>仪表盘 - 鱼行尺素</title>
-  <link href="" rel="stylesheet">
+  
   <link rel="stylesheet" href="/public/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/inter/inter.css">
   <link rel="stylesheet" href="/public/css/admin.css">
   <script src="/public/js/echarts.min.js"></script>
 </head>
@@ -286,7 +287,11 @@
         }
 
         initCharts();
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error('[loadDashboard]', err);
+        document.getElementById('recentPosts').innerHTML = '<div style="padding:20px;color:#f87171;font-size:13px;">数据加载失败: ' + err.message + '</div>';
+        document.getElementById('recentComments').innerHTML = '<div style="padding:20px;color:#f87171;font-size:13px;">数据加载失败: ' + err.message + '</div>';
+      }
     }
 
     loadDashboard();

@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文章管理 - 鱼行尺素</title>
-  <link href="" rel="stylesheet">
+  
   <link rel="stylesheet" href="/public/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/inter/inter.css">
   <link rel="stylesheet" href="/public/css/admin.css">
 </head>
 <body>
@@ -108,11 +109,11 @@
       if (search !== currentSearch) { currentPage = 1; currentSearch = search; }
       try {
         // Get total count
-        const countData = await AdminAPI.getPostCount({ search: currentSearch || undefined });
+        const countData = await AdminAPI.getPostCount({ search: currentSearch || null });
         totalItems = countData.total || 0;
         document.getElementById('totalCount').textContent = totalItems;
 
-        const posts = await AdminAPI.getPosts({ page: currentPage, limit: pageSize, search: currentSearch || undefined });
+        const posts = await AdminAPI.getPosts({ page: currentPage, limit: pageSize, search: currentSearch || null });
         const tbody = document.getElementById('postsTable');
 
         if (posts.length === 0) {
@@ -141,7 +142,11 @@
 
         // Pagination
         renderPagination();
-      } catch(e) { console.error(e); }
+      } catch(e) {
+        console.error('[loadPosts]', e);
+        var tbody = document.getElementById('postsTable');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#f87171;font-size:13px;">加载失败: ' + e.message + '</td></tr>';
+      }
     }
 
     function renderPagination() {

@@ -18,13 +18,11 @@ const API = {
 
     getSettings()      { return this.request('GET', '/settings'); },
     getProfile()        { return this.request('GET', '/profile'); },
-    getPosts(params)    {
-        const q = new URLSearchParams(params || {}).toString();
-        return this.request('GET', `/posts${q ? '?' + q : ''}`);
-    },
+    _qs(p)            { if (!p) return ''; const q = Object.entries(p).filter(([_,v]) => v != null && v !== '').map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v)).join('&'); return q ? '?' + q : ''; },
+    getPosts(params)    { return this.request('GET', '/posts' + this._qs(params)); },
     getPostAll()        { return this.request('GET', '/posts/all'); },
     getPost(id)         { return this.request('GET', `/posts/${id}`); },
-    getPostCount(params){ const q = new URLSearchParams(params||{}).toString(); return this.request('GET', `/posts/count${q?'?'+q:''}`); },
+    getPostCount(params){ return this.request('GET', '/posts/count' + this._qs(params)); },
     getCategories()     { return this.request('GET', '/categories'); },
     getTags()          { return this.request('GET', '/tags'); },
     getFriends()        { return this.request('GET', '/friends'); },
@@ -59,8 +57,9 @@ const AdminAPI = {
 
     login(u, p)       { return this.request('POST', '/login', { username: u, password: p }); },
     getStats()        { return this.request('GET', '/stats'); },
-    getPostCount(p)   { const q = new URLSearchParams(p||{}).toString(); return this.request('GET', `/posts/count${q?'?'+q:''}`); },
-    getPosts(p)       { const q = new URLSearchParams(p||{}).toString(); return this.request('GET', `/posts${q?'?'+q:''}`); },
+    _qs(p)            { if (!p) return ''; const q = Object.entries(p).filter(([_,v]) => v != null && v !== '').map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v)).join('&'); return q ? '?' + q : ''; },
+    getPostCount(p)   { return this.request('GET', '/posts/count' + this._qs(p)); },
+    getPosts(p)       { return this.request('GET', '/posts' + this._qs(p)); },
     getPost(id)       { return this.request('GET', `/posts/${id}`); },
     createPost(data)  { return this.request('POST', '/posts', data); },
     updatePost(id, d){ return this.request('PUT', `/posts/${id}`, d); },
